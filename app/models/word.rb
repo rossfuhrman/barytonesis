@@ -1,17 +1,13 @@
 class Word < ActiveRecord::Base
-  after_create :translate
+  before_save :translate
 
   def translate
-    original = self.original
-    length = original.length
-    start_point = (0..(length - 1)).to_a.sample
-    thinger = original.each_char{
-      if index == start_point
-        letter.upcase
+    if original and not translated
+      self.translated = original.dup.tap do |original|
+        index = (0..(original.length - 1)).to_a.sample
+        original[index] = original[index].upcase
       end
     end
-    self.translated = thinger 
-    self.save
   end
 end
 
