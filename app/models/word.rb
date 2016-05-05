@@ -4,8 +4,8 @@ class Word < ActiveRecord::Base
   def translate
     if original and not translated
       self.translated = original.dup.tap do |original|
-        index = (0..(original.length - 1)).to_a.sample
-        original[index] = original[index].upcase
+        index, new_index = (0..(original.length - 1)).to_a.sample(2)
+        original[index], original[new_index] = original[new_index], original[index].upcase
       end
     end
   end
